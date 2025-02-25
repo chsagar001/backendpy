@@ -5,6 +5,16 @@ from sqlalchemy.dialects.postgresql import ARRAY
 import enum
 from datetime import datetime
 
+
+class ReactionType(str, enum.Enum):
+    LIKE = "like"
+    LOVE = "love"
+    HAHA = "haha"
+    WOW = "wow"
+    SAD = "sad"
+    ANGRY = "angry"
+
+
 class OrderStatus(str, enum.Enum):
     pending = "Pending"
     processing = "Processing"
@@ -51,6 +61,7 @@ class User(Base):
     wishlist_items = relationship("WishlistItem", back_populates="user", cascade="all, delete-orphan")
     comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
     likes = relationship("Like", back_populates="user", cascade="all, delete-orphan")
+    reactions = relationship("Reaction", back_populates="user", cascade="all, delete-orphan")
 
 
 # Partial unique index for email where is_deleted is False
@@ -70,6 +81,7 @@ class Post(Base):
     comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
     likes = relationship("Like", back_populates="post", cascade="all, delete-orphan")
     media_attachments = relationship("Media", back_populates="post", cascade="all, delete-orphan")
+    reactions = relationship("Reaction", back_populates="post", cascade="all, delete-orphan")
 
 
 class OrderStatusLog(Base):
@@ -145,3 +157,16 @@ class Media(Base):
     post_id = Column(Integer, ForeignKey("posts.id"), nullable=False)
 
     post = relationship("Post", back_populates="media_attachments")
+
+
+class Reaction(Base):
+    __tablename__ = "reactions"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    post_id = Column(Integer, ForeignKey("posts.id"), nullable=False)
+    reaction_type = Column(Enum(ReactionType), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="reactions")
+    post = relationship("Post", back_populates="reactions")

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
-from routes import auth, users, posts, comments, likes, orders, wishlist
+from routes import auth, users, posts, comments, likes, orders, wishlist, reactions
 from database import engine, Base, get_db
 
 Base.metadata.create_all(bind=engine)
@@ -19,6 +19,7 @@ app.include_router(comments.router, prefix="/comments", tags=["Comments"])
 app.include_router(likes.router, prefix="/likes", tags=["Likes"])
 app.include_router(orders.router, prefix="/orders", tags=["Orders"])
 app.include_router(wishlist.router, prefix="/wishlist", tags=["Wishlist"])
+app.include_router(reactions.router, prefix="/reactions", tags=["Reactions"])
 
 
 @app.get("/", tags=["Root"])

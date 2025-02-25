@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 from models import UserRole, OrderStatus
+from enum import Enum
 
 class MediaBase(BaseModel):
     file_url: str
@@ -126,6 +127,13 @@ class PostResponse(PostBase):
     comment_count: int
     created_at: datetime
     media_attachments: List[MediaResponse]
+    like_count: int
+    love_count: int
+    haha_count: int
+    wow_count: int
+    sad_count: int
+    angry_count: int
+    comment_count: int
 
     class Config:
         from_attributes = True
@@ -149,3 +157,27 @@ class OrderResponse(OrderBase):
 
     class Config:
         from_attributes = True
+
+class ReactionType(str, Enum):
+    LIKE = "like"
+    LOVE = "love"
+    HAHA = "haha"
+    WOW = "wow"
+    SAD = "sad"
+    ANGRY = "angry"
+
+class ReactionBase(BaseModel):
+    reaction_type: ReactionType
+
+class ReactionCreate(ReactionBase):
+    pass
+
+class ReactionResponse(ReactionBase):
+    id: int
+    user_id: int
+    post_id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
