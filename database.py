@@ -3,7 +3,6 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-#load environment variables from .env file
 load_dotenv()
 
 #read the database_url from env
