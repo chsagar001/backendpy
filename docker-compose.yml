@@ -12,12 +12,18 @@ services:
       - "5432:5432"
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auth_user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   web:
     build: .
     container_name: fastapi-app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_URL: postgresql://auth_user:auth_pass@db:5432/auth_db
     ports:
