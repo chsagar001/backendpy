@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: auth_user
+      POSTGRES_PASSWORD: auth_pass
+      POSTGRES_DB: auth_db
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  web:
+    build: .
+    container_name: fastapi-app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://auth_user:auth_pass@db:5432/auth_db
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

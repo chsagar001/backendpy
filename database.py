@@ -1,7 +1,13 @@
+from dotenv import load_dotenv
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "postgresql://auth_user:auth_pass@localhost:5432/auth_db"
+#load environment variables from .env file
+load_dotenv()
+
+#read the database_url from env
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
