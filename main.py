@@ -8,7 +8,7 @@ from database import engine, Base, get_db
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="E-commerce API",
+    title="E-commerce API- Kubernetes Deployment",
     description="API for user authentication, users, posts, orders, and wishlist management.",
 )
 
