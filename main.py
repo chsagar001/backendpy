@@ -24,7 +24,7 @@ app.include_router(reactions.router, prefix="/reactions", tags=["Reactions"])
 
 @app.get("/", tags=["Root"])
 def read_root():
-    return {"message": "Welcome to the E-commerce API"}
+    return {"message": "Welcome to the E-commerce API- Kubernetes Deployment"}
 
 @app.get("/test-db", tags=["Health Check"])
 def test_db_connection(db: Session = Depends(get_db)):
